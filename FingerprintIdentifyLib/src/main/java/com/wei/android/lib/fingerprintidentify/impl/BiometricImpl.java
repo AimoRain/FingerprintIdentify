@@ -36,7 +36,7 @@ public class BiometricImpl extends BaseFingerprint {
         try {
             BiometricManager biometricManager = BiometricManager.from(context);
             setHardwareEnable(false);
-            int v = biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG);
+            int v = biometricManager.canAuthenticate(255);
             switch (v) {
                 case BiometricManager.BIOMETRIC_SUCCESS:
                     setHardwareEnable(true);
@@ -63,7 +63,7 @@ public class BiometricImpl extends BaseFingerprint {
 
     @Override
     protected void doIdentify() {
-        BiometricPrompt.CryptoObject cryptoObject = createCryptoObject(BiometricPrompt.CryptoObject.class);
+        BiometricPrompt.CryptoObject cryptoObject = null
         if (cryptoObject == null) {
             Log.e(TAG, "Unable to auth with CryptoObject, retry authenticate.");
         }
@@ -107,7 +107,7 @@ public class BiometricImpl extends BaseFingerprint {
             });
 
             builder.setConfirmationRequired(false);
-            int authenticators = BiometricManager.Authenticators.BIOMETRIC_STRONG;
+            int authenticators = 255;
             builder.setAllowedAuthenticators(authenticators);
             builder.setDeviceCredentialAllowed(isDeviceCredentialAllowed(authenticators));
             BiometricPrompt prompt = builder.build();
