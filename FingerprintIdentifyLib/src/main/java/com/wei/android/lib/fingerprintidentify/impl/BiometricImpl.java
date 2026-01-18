@@ -63,7 +63,7 @@ public class BiometricImpl extends BaseFingerprint {
 
     @Override
     protected void doIdentify() {
-        BiometricPrompt.CryptoObject cryptoObject = null
+        BiometricPrompt.CryptoObject cryptoObject = null;
         if (cryptoObject == null) {
             Log.e(TAG, "Unable to auth with CryptoObject, retry authenticate.");
         }
