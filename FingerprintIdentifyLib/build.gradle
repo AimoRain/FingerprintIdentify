@@ -1,9 +1,16 @@
-apply plugin: 'com.android.library'
+plugins {
+    id 'com.android.library'
+    id 'maven-publish' // 必须加这个，新版 Gradle 用它来发布
+}
+
+// 这一行是为了让 JitPack 找到你的包名
+group = 'com.github.AimoRain'
+version = '2.0.5' 
 
 android {
     namespace 'com.wei.android.lib.fingerprintidentify'
-
     compileSdk 34
+
     defaultConfig {
         minSdk 14
         targetSdk 34
@@ -17,9 +24,31 @@ android {
             proguardFiles 'proguard-rules.pro'
         }
     }
-    android {
-        lintOptions {
-            abortOnError false
+
+    // ✅ 修复：lintOptions 不能套在 android {} 里，要直接写
+    lintOptions {
+        abortOnError false
+    }
+    
+    // ✅ 新增：配置发布选项，确保生成 aar
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+        }
+    }
+}
+
+// ✅ 新增：告诉 Gradle 如何发布到 JitPack
+publishing {
+    publications {
+        release(MavenPublication) {
+            groupId = 'com.github.AimoRain'
+            artifactId = 'FingerprintIdentify'
+            version = '2.0.5'
+            
+            afterEvaluate {
+                from components.release
+            }
         }
     }
 }
